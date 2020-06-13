@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"encoding/json"
 
 	//"net/http"
 	"github.com/gorilla/mux"
@@ -20,7 +21,7 @@ func Reverse(s string) (result string) {
 func isPalindrome(str string) interface{} {
 	if str == Reverse(str) {
 		return true
-	}
+	}s
 	return false
 }
 
@@ -30,6 +31,7 @@ func Palindrome(w http.ResponseWriter, r *http.Request) {
 	var str string
 	fmt.Print("Enter a string: ")
 	fmt.Scan(&str)
+	json.NewEncoder(w).Encode(str)
 	if isPalindrome(strings.ToUpper(str)) == true {
 		fmt.Fprint(w, " TRUE.")
 	} else {
