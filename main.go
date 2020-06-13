@@ -1,39 +1,98 @@
-package main
+ package main
 
-import (
-	"fmt"
-	"net/http"
-	//"log"
-	//"net/http"
-)
+  import (
+ 	"fmt"
+  	"log"
+ 	"net/http"
+// // 	//"strconv"
+  	"github.com/gorilla/mux"
+  )
 
-func New(n int) int {
-	if n == 0 || n == 1 {
-		return n
-	} else {
-		return (New(n-1) + New(n-2))
-	}
-}
-
-func Compare(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func main() {
-	var n, i, j, k int
-	j = 0
-	fmt.Print("Enter the numbers")
-	fmt.Scanln(&n)
-	fmt.Print("First Series to be Printed")
+func Numbers_Fib(w http.ResponseWriter, r *http.Request) {
+w.Header().Set("Content-Type", "application/json")
+var n int
+// // 	//n, _ = strconv.Atoi(n)
+t1 := 0
+t2 := 1
+nextTerm := 0
+var i int
+ fmt.Scan(&n)
+	fmt.Print("Fibonacci Series :")
+	
 	for i = 1; i <= n; i++ {
-		fmt.Print(New(j), ",")
-		j++
-	}
-	fmt.Println()
+		if i == 1 {
+			//fmt.Fprint(w," ", t1)
+		   continue
+		} 
+		 if i == 2 {
+			fmt.Fprint(w," ", t2)
+		continue
+			} 
+ 		nextTerm = t1 + t2
+ 		t1 = t2
+ 		t2 = nextTerm
+		 }
+		
+fmt.Fprint(w," The Output is ", nextTerm)
+ }
 
-	fmt.Println("Second Series to be Printed")
-	for k = 1; k <= 10; k++ {
-		fmt.Print(k, ",")
-	}
+ func main() {
+ 	router := mux.NewRouter().StrictSlash(true)
+	 router.HandleFunc("/Numbers_Fib", Numbers_Fib).Methods("GET")
+	 router.HandleFunc("/Numbers_Fib", Numbers_Fib).Methods("POST")
+ 	log.Fatal(http.ListenAndServe(":8080",router))
+// 	fmt.Println("serving")
+ }
 
-}
+// func main() {
+//     r := mux.NewRouter()
+// 	log.Fatal(http.ListenAndServe(":8085", r))
+// }
+// package main
+
+// import (
+// 	"fmt"
+// 	"net/http"
+// 	"github.com/gorilla/mux"
+// )
+
+// func main() {
+// 	r := mux.NewRouter()
+// 	r.HandleFunc("/hello", helloHandler).Methods("GET")
+// 	r.HandleFunc("/goodbye", goodbyeHandler).Methods("GET")
+// 	http.Handle("/", r)
+// 	http.ListenAndServe(":8080", nil)
+// }
+
+// func helloHandler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprint(w, "Hello world!")
+// 	w.Header().Set("Content-Type", "application/json")
+// n := mux.Vars(r)
+// n, _ = strconv.Atoi(n)
+// t1 := 0
+// t2 := 1
+// nextTerm := 0
+
+//  fmt.Scan(&n)
+//  	fmt.Print("Fibonacci Series :")
+// 	for i := 1; i <= n; i++ {
+//  		if i == 1 {
+//  			fmt.Print(" ", t1)
+//  			continue
+//  		}
+//  		if i == 2 {
+//  			fmt.Print(" ", t2)
+//  			continue
+//  		}
+//  		nextTerm = t1 + t2
+//  		t1 = t2
+//  		t2 = nextTerm
+
+//  	}
+//  	//fmt.Print(" ", nextTerm)
+// }
+// }
+
+// func goodbyeHandler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprint(w, "Goodbye world!")
+// }
